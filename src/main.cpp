@@ -1,4 +1,5 @@
 #include "rubik.hpp"
+#include "app.hpp"
 #include <cstdio>
 
 
@@ -22,20 +23,8 @@ void printBars(char bars[3][3]) {
     );
 }
 
-int main() {
-    Rubik r;
-    r.get(FACE_F);
-    r.get(FACE_U);
-    r.get(FACE_L);
-    r.get(FACE_R);
-    r.get(FACE_D);
-    r.get(FACE_B);
-    r.move(FACE_B, false);
-    r.get(FACE_F);
-    r.get(FACE_U);
-    r.get(FACE_L);
-    r.get(FACE_R);
-    r.get(FACE_D);
-    r.get(FACE_B);
+int main(int argc, char **argv) {
+    App a(argc, argv);
+    a.exec();
     return 0;
 }

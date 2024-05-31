@@ -381,9 +381,6 @@ void Rubik::rotateFace(char face[3][3], bool clockwise) {
     }
 }
 
-void rotateArray(char arr[12], bool clockwise) {
-}
-
 void Rubik::rotateBars(char bars[4][3], bool clockwise) {
     char temp1, temp2, temp3;
     if (clockwise) {

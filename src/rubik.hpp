@@ -1,3 +1,5 @@
+#ifndef RUBIK_H
+#define RUBIK_H
 
 enum Face {
     FACE_F,
@@ -40,3 +42,4 @@ public:
     char** get(Face);
 };
 
+#endif
