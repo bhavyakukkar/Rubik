@@ -39,7 +39,7 @@ public:
     static void rotateFace(char[3][3], bool);
     Rubik();
     void move(Face, bool);
-    char** get(Face);
+    char get(Face, int, int);
 };
 
 #endif

@@ -2,6 +2,125 @@
 #include <unistd.h>
 #include <cstdio>
 
+Rubik::Rubik() {
+}
+
+void Rubik::move(Face face, bool clockwise) {
+    switch (face) {
+        case FACE_F:
+            moveF(clockwise);
+            break;
+        case FACE_U:
+            moveU(clockwise);
+            break;
+        case FACE_L:
+            moveL(clockwise);
+            break;
+        case FACE_R:
+            moveR(clockwise);
+            break;
+        case FACE_D:
+            moveD(clockwise);
+            break;
+        case FACE_B:
+            moveB(clockwise);
+            break;
+    }
+}
+
+char Rubik::get(Face face, int i, int j) {
+    return grid[face][i][j];
+    //printf(
+    //    "\n%c %c %c\n%c %c %c\n%c %c %c\n\n",
+    //    grid[face][0][0], grid[face][0][1], grid[face][0][2],
+    //    grid[face][1][0], grid[face][1][1], grid[face][1][2],
+    //    grid[face][2][0], grid[face][2][1], grid[face][2][2]
+    //);
+    //return NULL;
+}
+
+void Rubik::rotateFace(char face[3][3], bool clockwise) {
+    char temp1, temp2;
+    if(clockwise) {
+        temp1 = face[0][0];
+        temp2 = face[0][1];
+
+        face[0][0] = face[2][0];
+        face[0][1] = face[1][0];
+
+        face[2][0] = face[2][2];
+        face[1][0] = face[2][1];
+
+        face[2][2] = face[0][2];
+        face[2][1] = face[1][2];
+
+        face[0][2] = temp1;
+        face[1][2] = temp2;
+    } else {
+        temp1 = face[0][0];
+        temp2 = face[0][1];
+
+        face[0][0] = face[0][2];
+        face[0][1] = face[1][2];
+
+        face[0][2] = face[2][2];
+        face[1][2] = face[2][1];
+
+        face[2][2] = face[2][0];
+        face[2][1] = face[1][0];
+
+        face[2][0] = temp1;
+        face[1][0] = temp2;
+    }
+}
+
+void Rubik::rotateBars(char bars[4][3], bool clockwise) {
+    char temp1, temp2, temp3;
+    if (clockwise) {
+        temp1 = bars[0][0];
+        temp2 = bars[0][1];
+        temp3 = bars[0][2];
+        for (int i = 0; i < 3; i++) {
+            bars[i][0] = bars[i + 1][0];
+            bars[i][1] = bars[i + 1][1];
+            bars[i][2] = bars[i + 1][2];
+        }
+        bars[3][0] = temp1;
+        bars[3][1] = temp2;
+        bars[3][2] = temp3;
+    } else {
+        temp1 = bars[3][0];
+        temp2 = bars[3][1];
+        temp3 = bars[3][2];
+        for (int i = 2; i >= 0; i--) {
+            bars[i + 1][0] = bars[i][0];
+            bars[i + 1][1] = bars[i][1];
+            bars[i + 1][2] = bars[i][2];
+        }
+        bars[0][0] = temp1;
+        bars[0][1] = temp2;
+        bars[0][2] = temp3;
+    }
+}
+
+void Rubik::copyBar(char dest[3], char src[3], bool revSrc) {
+    if(!revSrc) {
+        dest[0] = src[0];
+        dest[1] = src[1];
+        dest[2] = src[2];
+    } else {
+        dest[0] = src[2];
+        dest[1] = src[1];
+        dest[2] = src[0];
+    }
+}
+
+void Rubik::copyFace(char dest[3][3], char src[3][3]) {
+    for(int i = 0; i < 3; i++)
+        for(int j = 0; j < 3; j++)
+            dest[i][j] = src[i][j];
+}
+
 void Rubik::moveF(bool clockwise) {
     char bars[4][3];
     char temp[3][3];
@@ -308,122 +427,4 @@ void Rubik::moveB(bool clockwise) {
         rotateFace(temp, false);
         copyFace(grid[FACE_L], temp);
     }
-}
-
-Rubik::Rubik() {
-}
-
-void Rubik::move(Face face, bool clockwise) {
-    switch (face) {
-        case FACE_F:
-            moveF(clockwise);
-            break;
-        case FACE_U:
-            moveU(clockwise);
-            break;
-        case FACE_L:
-            moveL(clockwise);
-            break;
-        case FACE_R:
-            moveR(clockwise);
-            break;
-        case FACE_D:
-            moveD(clockwise);
-            break;
-        case FACE_B:
-            moveB(clockwise);
-            break;
-    }
-}
-
-char** Rubik::get(Face face) {
-    printf(
-        "\n%c %c %c\n%c %c %c\n%c %c %c\n\n",
-        grid[face][0][0], grid[face][0][1], grid[face][0][2],
-        grid[face][1][0], grid[face][1][1], grid[face][1][2],
-        grid[face][2][0], grid[face][2][1], grid[face][2][2]
-    );
-    return NULL;
-}
-
-void Rubik::rotateFace(char face[3][3], bool clockwise) {
-    char temp1, temp2;
-    if(clockwise) {
-        temp1 = face[0][0];
-        temp2 = face[0][1];
-
-        face[0][0] = face[2][0];
-        face[0][1] = face[1][0];
-
-        face[2][0] = face[2][2];
-        face[1][0] = face[2][1];
-
-        face[2][2] = face[0][2];
-        face[2][1] = face[1][2];
-
-        face[0][2] = temp1;
-        face[1][2] = temp2;
-    } else {
-        temp1 = face[0][0];
-        temp2 = face[0][1];
-
-        face[0][0] = face[0][2];
-        face[0][1] = face[1][2];
-
-        face[0][2] = face[2][2];
-        face[1][2] = face[2][1];
-
-        face[2][2] = face[2][0];
-        face[2][1] = face[1][0];
-
-        face[2][0] = temp1;
-        face[1][0] = temp2;
-    }
-}
-
-void Rubik::rotateBars(char bars[4][3], bool clockwise) {
-    char temp1, temp2, temp3;
-    if (clockwise) {
-        temp1 = bars[0][0];
-        temp2 = bars[0][1];
-        temp3 = bars[0][2];
-        for (int i = 0; i < 3; i++) {
-            bars[i][0] = bars[i + 1][0];
-            bars[i][1] = bars[i + 1][1];
-            bars[i][2] = bars[i + 1][2];
-        }
-        bars[3][0] = temp1;
-        bars[3][1] = temp2;
-        bars[3][2] = temp3;
-    } else {
-        temp1 = bars[3][0];
-        temp2 = bars[3][1];
-        temp3 = bars[3][2];
-        for (int i = 2; i >= 0; i--) {
-            bars[i + 1][0] = bars[i][0];
-            bars[i + 1][1] = bars[i][1];
-            bars[i + 1][2] = bars[i][2];
-        }
-        bars[0][0] = temp1;
-        bars[0][1] = temp2;
-        bars[0][2] = temp3;
-    }
-}
-
-void Rubik::copyBar(char dest[3], char src[3], bool revSrc) {
-    if(!revSrc) {
-        dest[0] = src[0];
-        dest[1] = src[1];
-        dest[2] = src[2];
-    } else {
-        dest[0] = src[2];
-        dest[1] = src[1];
-        dest[2] = src[0];
-    }
-}
-
-void Rubik::copyFace(char dest[3][3], char src[3][3]) {
-    for(int i = 0; i < 3; i++)
-        for(int j = 0; j < 3; j++)
-            dest[i][j] = src[i][j];
 }
