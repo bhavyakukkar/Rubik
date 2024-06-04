@@ -244,6 +244,6 @@ App::App(int argc, char **argv) : QApplication(argc, argv), r(), window(nullptr,
 {
     std::cout << "app constructed\n";
     window.setFixedSize(400, 600);
-    window.setWindowTitle("Pixylene");
+    window.setWindowTitle("Rubik");
     window.show();
 }
