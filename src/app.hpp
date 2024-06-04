@@ -10,8 +10,11 @@
 #ifndef APP_H
 #define APP_H
 
-#define CELL_WIDTH 32
-#define CELL_HEIGHT 32
+#define CELL_WIDTH 30
+#define CELL_HEIGHT 30
+#define CELL_GAP 4
+#define FACE_GAP 10
+#define PADDING 30
 
 class Viewport : public QGraphicsView
 {
@@ -19,14 +22,11 @@ class Viewport : public QGraphicsView
 private:
     QGraphicsScene scene;
     Rubik* rubik;
+    int cw = CELL_WIDTH, ch = CELL_HEIGHT, cg = CELL_GAP, fg = FACE_GAP, padding = PADDING;
 
 public:
     Viewport(QWidget *parent = nullptr);
     void draw(Rubik *rubik);
-
-protected:
-    void resizeEvent(QResizeEvent*) override;
-    //void paintEvent(QPaintEvent*) override;
 
 };
 
@@ -37,25 +37,25 @@ class MainWindow : public QMainWindow
 private:
     Viewport viewport;
     Rubik* rubik;
-
-    QPushButton *buttonF;
-    QPushButton *buttonU;
-    QPushButton *buttonL;
-    QPushButton *buttonR;
-    QPushButton *buttonD;
-    QPushButton *buttonB;
-    void onPressButton(Face);
+    void onPressButton(Face, bool);
 
 private slots:
-    void on_buttonF_pressed();
-    void on_buttonU_pressed();
-    void on_buttonL_pressed();
-    void on_buttonR_pressed();
-    void on_buttonD_pressed();
-    void on_buttonB_pressed();
+    void pressedButtonF();
+    void pressedButtonF_();
+    void pressedButtonU();
+    void pressedButtonU_();
+    void pressedButtonL();
+    void pressedButtonL_();
+    void pressedButtonR();
+    void pressedButtonR_();
+    void pressedButtonD();
+    void pressedButtonD_();
+    void pressedButtonB();
+    void pressedButtonB_();
 
 public:
     MainWindow(QWidget *parent = nullptr, Rubik *rubik = nullptr);
+
 };
 
 
